@@ -9,6 +9,11 @@
 class DropdownFormAction extends CompositeField implements BetterButtonInterface {
 
 	
+	private static $extensions = array (
+		'BetterButtonGroupable'
+	);
+
+
 	/**
 	 * To ensure the buttons get unique ids, keep track of the instances
 	 * @var integer
@@ -30,8 +35,10 @@ class DropdownFormAction extends CompositeField implements BetterButtonInterface
 	 */
 	public function __construct($title = null, $children = array ()) {
 		$this->Title = $title;
-		foreach($children as $c) {
-			$c->setUseButtonTag(true);
+		foreach($children as $c) {			
+			if($c instanceof FormAction) {				
+				$c->setUseButtonTag(true);
+			}
 		}
 		parent::__construct($children);		
 		self::$instance_count++;
@@ -87,12 +94,16 @@ class DropdownFormAction extends CompositeField implements BetterButtonInterface
 		$this->gridFieldRequest = $request;
 
 		foreach($this->children as $child) {
-			if(!$child instanceof BetterButton) {
+			if(!$child instanceof BetterButton && !$child instanceof BetterButtonAction) {
 				throw new Exception("DropdownFormAction must be passed instances of BetterButton");
 			}
+			
 			$child->bindGridField($form, $request);
-			$child->setIsGrouped(true);			
-			$child->setUseButtonTag(true);
+			$child->setIsGrouped(true);
+			
+			if($child instanceof FormAction) {
+				$child->setUseButtonTag(true);	
+			}
 		}
 
 		return $this;

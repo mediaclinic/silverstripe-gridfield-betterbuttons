@@ -9,6 +9,12 @@
  */
 class BetterButtonAction extends LiteralField implements BetterButtonInterface {
 
+
+	private static $extensions = array (
+		'BetterButtonGroupable'
+	);
+
+
     /**
      * The form that this action is associated with
      * @var Form
@@ -87,13 +93,15 @@ class BetterButtonAction extends LiteralField implements BetterButtonInterface {
     }
 
 
+
     /**
      * Gets the HTML representing the button
      * @return string
      */
     public function getButtonHTML() {
         return sprintf(
-            '<a class="ss-ui-button cms-panel-link %s" href="%s" %s>%s</a>',
+            '<a class="%s %s" href="%s" %s>%s</a>',
+            $this->isGrouped() ? '' : 'ss-ui-button cms-panel-link',
             $this->extraClass(),
             $this->getButtonLink(),
             $this->getAttributesHTML(),
@@ -108,6 +116,16 @@ class BetterButtonAction extends LiteralField implements BetterButtonInterface {
      */
     public function getButtonText() {
         return $this->buttonText;
+    }
+
+
+    /**
+     * Sets the confirm text
+     * @param  $str
+     * @return  BetterButtonAction
+     */
+    public function setConfirmation($str) {
+    	return $this->setAttribute('data-confirm', Convert::raw2att($str));
     }
 
 

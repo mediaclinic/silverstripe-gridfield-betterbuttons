@@ -8,20 +8,17 @@
  */
 abstract class BetterButton extends FormAction implements BetterButtonInterface {
 
+	
+	private static $extensions = array (
+		'BetterButtonGroupable'
+	);
+
 
     /**
      * The request that points to the GridFieldDetailForm
      * @var GridFieldDetailForm_ItemRequest
      */
     protected $gridFieldRequest;
-
-
-    /**
-     * Is the button part of a compsite field, e.g. DropdownFormAction
-     * @var boolean
-     */
-    protected $isGrouped = false;
-
 
 
     /**
@@ -80,24 +77,12 @@ abstract class BetterButton extends FormAction implements BetterButtonInterface 
 
 
     /**
-     * Set true if the button is part of a group
-     * @param bool $bool
-     * @return  FormAction
-     */
-    public function setIsGrouped($bool) {
-        $this->isGrouped = $bool;
-
-        return $this;
-    }
-
-
-    /**
      * Render the field with the correct attributes
      * @param array $properties
      * @return  FormAction
      */
     public function Field($properties = array ()) {
-        if($this->isGrouped) {
+        if($this->isGrouped()) {
             $this->transformToInput();
         }
         else {

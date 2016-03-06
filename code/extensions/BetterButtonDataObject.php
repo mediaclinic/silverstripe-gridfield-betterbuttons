@@ -52,7 +52,19 @@ class BetterButtonDataObject extends DataExtension {
      */
     public function findActionByName($action) {
         $actions = $this->owner->getBetterButtonsActions();
-        $formAction = $actions->fieldByName($action);
+        $formAction = false;
+        
+        foreach($actions as $f) {
+        	if($formAction) break;
+        	
+        	if($f instanceof CompositeField) {
+        		$formAction = $f->fieldByName($action);        		
+        	}
+        	else if($f->getName() === $action) {
+        		$formAction = $f;
+        	}
+        }
+        
         if(!$formAction) {
             $utils = $this->owner->getBetterButtonsUtils();
             $formAction = $utils->fieldByName($action);

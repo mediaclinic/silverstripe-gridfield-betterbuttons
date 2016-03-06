@@ -8,7 +8,6 @@
  */
 interface BetterButtonInterface {
 
-
     /**
      * Determines if the button should display
      * @return bool
@@ -16,6 +15,7 @@ interface BetterButtonInterface {
     public function shouldDisplay();
 
 
+    
     /**
      * Binds the action to a GridField edit page
      * @param  Form $form
